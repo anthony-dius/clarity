@@ -14,4 +14,9 @@ describe("inconsistentTerminologyRule", () => {
     const text = "First set up the environment.\nNow set up the database.\n";
     expect(inconsistentTerminologyRule.check(text, "f.md").length).toBe(0);
   });
+
+  test("flags 'command-line tool' as a synonym for 'CLI', used earlier", () => {
+    const text = "The CLI accepts file paths.\nThe command-line tool prints results.\n";
+    expect(inconsistentTerminologyRule.check(text, "f.md").length).toBe(1);
+  });
 });

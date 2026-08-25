@@ -17,4 +17,14 @@ describe("nominalizationRule", () => {
     const findings = nominalizationRule.check("First line is fine.\nCheck the utilization here.\n", "f.md");
     expect(findings[0].line).toBe(2);
   });
+
+  test("flags 'optimization'", () => {
+    expect(nominalizationRule.check("Run the optimization step.\n", "f.md").length).toBe(1);
+  });
+
+  test("flags 'facilitation' and 'maximization'/'minimization'", () => {
+    expect(nominalizationRule.check("This aids facilitation of the process.\n", "f.md").length).toBe(1);
+    expect(nominalizationRule.check("The goal is maximization of output.\n", "f.md").length).toBe(1);
+    expect(nominalizationRule.check("The goal is minimization of waste.\n", "f.md").length).toBe(1);
+  });
 });

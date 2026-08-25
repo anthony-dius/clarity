@@ -9,9 +9,24 @@ export const complexWordRule: Rule = {
   check: (text, file) => {
     const findings: Finding[] = [];
     for (const sentence of splitSentences(text)) {
-      const match = sentence.text.match(/\b(utilize[sd]?|facilitate[sd]?)\b/i);
+      const match = sentence.text.match(
+        /\b(utilize[sd]?|facilitate[sd]?|leverage[sd]?|endeavor|ascertain(ed)?|commence[sd]?|terminate[sd]?)\b/i,
+      );
       if (match) {
-        const simple = /^facilitate/i.test(match[0]) ? "help" : "use";
+        const word = match[0].toLowerCase();
+        const simple = /^facilitate/.test(word)
+          ? "help"
+          : /^leverage/.test(word)
+            ? "use"
+            : /^endeavor/.test(word)
+              ? "try"
+              : /^ascertain/.test(word)
+                ? "find out"
+                : /^commence/.test(word)
+                  ? "start"
+                  : /^terminate/.test(word)
+                    ? "end"
+                    : "use";
         findings.push({
           file,
           line: sentence.line,

@@ -9,6 +9,7 @@ export const inconsistentTerminologyRule: Rule = {
   check: (text, file) => {
     const findings: Finding[] = [];
     let sawSetUp = false;
+    let sawCli = false;
     for (const sentence of splitSentences(text)) {
       if (/\bset up\b/i.test(sentence.text)) {
         sawSetUp = true;
@@ -22,6 +23,22 @@ export const inconsistentTerminologyRule: Rule = {
           principle: "Use one term per concept, consistently",
           message: `Term "configure" is a synonym for "set up", used earlier in the document.`,
           remediation: `Use one term consistently for this concept — pick either "set up" or "configure" and use it throughout.`,
+          excerpt: sentence.text,
+        });
+      }
+
+      if (/\bCLI\b/.test(sentence.text)) {
+        sawCli = true;
+      }
+      if (sawCli && /\bcommand-line tool\b/i.test(sentence.text)) {
+        findings.push({
+          file,
+          line: sentence.line,
+          column: null,
+          ruleId: "inconsistent-terminology",
+          principle: "Use one term per concept, consistently",
+          message: `Term "command-line tool" is a synonym for "CLI", used earlier in the document.`,
+          remediation: `Use one term consistently for this concept — pick either "CLI" or "command-line tool" and use it throughout.`,
           excerpt: sentence.text,
         });
       }

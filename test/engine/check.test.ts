@@ -33,4 +33,41 @@ describe("checkFile", () => {
     const sorted = [...result.findings].sort((a, b) => a.ruleId.localeCompare(b.ruleId));
     expect(ruleIds).toEqual(sorted.map((f) => f.ruleId));
   });
+
+  test("masks a verbatim region so no rule reports findings inside it, while content outside is still checked", async () => {
+    const text = [
+      "<!-- clarity:verbatim:start -->",
+      "You might want to utilize this, it is important to note that.",
+      "<!-- clarity:verbatim:end -->",
+      "",
+      "You might want to check this normally.",
+      "",
+    ].join("\n");
+    await Bun.write("fixtures/tmp-verbatim.md", text);
+    const result = await checkFile("fixtures/tmp-verbatim.md");
+    expect(result.findings.every((f) => f.line < 1 || f.line > 3)).toBe(true);
+    expect(result.findings.some((f) => f.line === 5)).toBe(true);
+  });
+
+  test("reports a single verbatim-marker-error finding and skips rule scanning when a marker error is present", async () => {
+    const text = ["<!-- clarity:verbatim:start -->", "No end marker below."].join("\n");
+    await Bun.write("fixtures/tmp-verbatim-error.md", text);
+    const result = await checkFile("fixtures/tmp-verbatim-error.md");
+    expect(result.status).toBe("fail");
+    expect(result.findings.length).toBe(1);
+    expect(result.findings[0].ruleId).toBe("verbatim-marker-error");
+    expect(result.findings[0].line).toBe(1);
+  });
+
+  test("a file consisting entirely of one verbatim block reports a clean pass", async () => {
+    const text = [
+      "<!-- clarity:verbatim:start -->",
+      "You might want to utilize this, it is important to note that.",
+      "<!-- clarity:verbatim:end -->",
+    ].join("\n");
+    await Bun.write("fixtures/tmp-verbatim-whole.md", text);
+    const result = await checkFile("fixtures/tmp-verbatim-whole.md");
+    expect(result.status).toBe("pass");
+    expect(result.findings).toEqual([]);
+  });
 });

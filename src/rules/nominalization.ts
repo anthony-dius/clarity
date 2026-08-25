@@ -9,7 +9,7 @@ export const nominalizationRule: Rule = {
   check: (text, file) => {
     const findings: Finding[] = [];
     for (const sentence of splitSentences(text)) {
-      const match = sentence.text.match(/\butilization\b/i);
+      const match = sentence.text.match(/\b(utilization|optimization|facilitation|maximization|minimization)\b/i);
       if (match) {
         findings.push({
           file,

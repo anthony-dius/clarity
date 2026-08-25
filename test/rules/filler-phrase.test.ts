@@ -19,4 +19,9 @@ describe("fillerPhraseRule", () => {
   test("does not flag plain text", () => {
     expect(fillerPhraseRule.check("Restart the service to apply the change.\n", "f.md").length).toBe(0);
   });
+
+  test("flags 'as previously mentioned' and 'it should be noted that'", () => {
+    expect(fillerPhraseRule.check("As previously mentioned, the build failed.\n", "f.md").length).toBe(1);
+    expect(fillerPhraseRule.check("It should be noted that tests are flaky.\n", "f.md").length).toBe(1);
+  });
 });

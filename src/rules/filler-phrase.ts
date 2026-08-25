@@ -9,7 +9,9 @@ export const fillerPhraseRule: Rule = {
   check: (text, file) => {
     const findings: Finding[] = [];
     for (const sentence of splitSentences(text)) {
-      const match = sentence.text.match(/\b(it is important to note that|in order to)\b/i);
+      const match = sentence.text.match(
+        /\b(it is important to note that|in order to|as previously mentioned|it should be noted that)\b/i,
+      );
       if (match) {
         findings.push({
           file,
