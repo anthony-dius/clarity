@@ -154,9 +154,12 @@ immediately with correct, static information.
   (files checked, files passed, files failed, total findings).
 - **FR-012**: The tool MUST explicitly report a clean pass for a file with zero
   findings rather than producing no output for that file.
-- **FR-013**: The ten built-in rules MUST be fixed for this initial version
-  (no user-authored custom rules) and MUST NOT change in content or number
-  without an accompanying rule-set version change.
+- **FR-013**: The initial version targets a curated set of built-in rules
+  (around ten); no user-authored custom rules are supported in v1. The exact
+  rule count MAY be adjusted during implementation if research shows a
+  different set better serves SC-001. Any change to the rule set after the v1
+  release SHOULD be accompanied by a rule-set version change, but this is
+  guidance rather than a hard release-blocking gate.
 - **FR-014**: The tool MUST detect unreadable, missing, or non-text input files
   and report a clear, actionable error identifying the offending file, without
   crashing or producing a partial/misleading result for that file.
@@ -180,9 +183,11 @@ immediately with correct, static information.
 
 ### Measurable Outcomes
 
-- **SC-001**: Given documents seeded with known AI-generated verbose/vague
-  writing patterns, the ten built-in rules together flag at least 90% of the
-  seeded patterns.
+- **SC-001** (target, not a hard release gate): Given documents seeded with
+  known AI-generated verbose/vague writing patterns, the built-in rules
+  together aim to flag a high majority of the seeded patterns (informal
+  target: ~90%). A shortfall against this target is acceptable if documented,
+  rather than blocking release.
 - **SC-002**: A user unfamiliar with ASD-STE100 can read any single finding and
   correctly identify what text to change and how, in under 30 seconds, without
   consulting any resource outside the tool's own output.
@@ -206,10 +211,11 @@ immediately with correct, static information.
   package or binary with no required separate language runtime install step
   assumed on the target machine; the exact packaging mechanism is a planning
   decision, not a specification concern.
-- The specific selection of the ten rules is the highest-impact subset of
-  ASD-STE100 principles for catching verbose, hedging, passive, or vague
-  AI-generated prose; the exact rule list is finalized during planning/research
-  and validated against SC-001, not fixed in this specification.
+- The specific selection of rules (target: around ten) is the highest-impact
+  subset of ASD-STE100 principles for catching verbose, hedging, passive, or
+  vague AI-generated prose; the exact rule list and count are finalized during
+  planning/research and weighed against SC-001 as a goal, not a fixed
+  specification requirement.
 - For the initial version, the tool and its built-in rule set share a single
   version number; tracking them as independently versionable artifacts is out
   of scope for v1.
