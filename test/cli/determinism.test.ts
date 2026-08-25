@@ -14,4 +14,11 @@ describe("determinism", () => {
     expect(first).toBe(second);
     expect(first.length).toBeGreaterThan(0);
   });
+
+  test("running the CLI twice on the wrapped-paragraph fixture produces byte-identical stdout", async () => {
+    const first = await runCli(["fixtures/wrapped-paragraph.md"]);
+    const second = await runCli(["fixtures/wrapped-paragraph.md"]);
+    expect(first).toBe(second);
+    expect(first.length).toBeGreaterThan(0);
+  });
 });

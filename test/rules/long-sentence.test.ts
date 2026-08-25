@@ -13,4 +13,13 @@ describe("longSentenceRule", () => {
     const findings = longSentenceRule.check("This is a short sentence.\n", "f.md");
     expect(findings.length).toBe(0);
   });
+
+  test("reports one finding with the correct word count for a sentence spanning 3 wrapped lines", () => {
+    const line1 = Array.from({ length: 9 }, (_, i) => `word${i}`).join(" ");
+    const line2 = Array.from({ length: 9 }, (_, i) => `more${i}`).join(" ");
+    const line3 = Array.from({ length: 9 }, (_, i) => `extra${i}`).join(" ") + ".";
+    const findings = longSentenceRule.check(`${line1}\n${line2}\n${line3}\n`, "f.md");
+    expect(findings.length).toBe(1);
+    expect(findings[0].message).toContain("27 words");
+  });
 });

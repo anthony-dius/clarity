@@ -20,4 +20,9 @@ describe("unclearReferentRule", () => {
   test("does not flag a sentence with an explicit subject", () => {
     expect(unclearReferentRule.check("The build fails on this input.\n", "f.md").length).toBe(0);
   });
+
+  test("does not false-positive on a wrapped continuation line starting with 'this'", () => {
+    const text = "The team reviewed the proposal and agreed it addressed every concern. Without\nthis fix, the release cannot proceed as planned this quarter.\n";
+    expect(unclearReferentRule.check(text, "f.md").length).toBe(0);
+  });
 });
