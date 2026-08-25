@@ -1,3 +1,4 @@
+import pkg from "../../package.json";
 import { runCheck } from "../engine/run";
 import { renderText } from "../format/text";
 import { renderJson } from "../format/json";
@@ -5,7 +6,7 @@ import { renderHelp } from "./help";
 import { renderVersion } from "./version";
 import "../rules/register-all";
 
-const TOOL_VERSION = "0.1.0";
+const TOOL_VERSION: string = pkg.version;
 const RULE_SET_VERSION = "1.0.0";
 
 async function main(argv: string[]): Promise<number> {

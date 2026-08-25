@@ -9,8 +9,9 @@ async function runCli(args: string[]) {
 
 describe("clarity CLI --version", () => {
   test("prints tool version and rule-set version, exits 0", async () => {
+    const pkg = await Bun.file("package.json").json();
     const { stdout, exitCode } = await runCli(["--version"]);
-    expect(stdout).toContain("0.1.0");
+    expect(stdout).toContain(pkg.version);
     expect(stdout).toContain("1.0.0");
     expect(exitCode).toBe(0);
   });

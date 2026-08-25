@@ -27,6 +27,13 @@ jobs:
           fetch-tags: true
 
       - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      # Trusted publishing (OIDC) needs npm 11.5.1+; setup-node's bundled
+      # npm may be older, so pin it explicitly rather than assume.
+      - run: npm install -g npm@latest
       - run: bun install
 
       - name: Resolve tag
