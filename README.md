@@ -25,7 +25,42 @@ into a repo, not a fork).
 | [uv](https://docs.astral.sh/uv/) | Installs Python-based CLIs (`specify`, `habit-hooks`) as isolated tools | `uv --version` |
 | git | Everything here assumes a git repo (spec-kit's branch workflow, probity's session history) | `git --version` |
 
-## Clarity itself
+## Install
+
+No config file, no flags required for the common case — `clarity <file>` is
+the whole interface. See `specs/001-ste100-cli-checker/contracts/cli.md` for
+the full CLI contract. Pick whichever install path fits:
+
+```bash
+# No install — run once via npx
+npx @anthony-dius/clarity path/to/doc.md
+
+# Install globally via npm
+npm install -g @anthony-dius/clarity
+clarity path/to/doc.md
+
+# Download a prebuilt binary (no Node/npm required at all)
+# — pick the asset matching your platform from the release page:
+# https://github.com/anthony-dius/clarity/releases/latest
+curl -LO https://github.com/anthony-dius/clarity/releases/latest/download/clarity-linux-x64
+chmod +x clarity-linux-x64
+./clarity-linux-x64 path/to/doc.md
+```
+
+**Verifying a release**: every binary and the npm package are built by this
+repo's CI from a tagged commit, never uploaded by hand. Check a binary
+against the release's `SHA256SUMS`, or verify cryptographic build provenance
+directly:
+
+```bash
+gh attestation verify clarity-linux-x64 --repo anthony-dius/clarity
+```
+
+The npm package carries the equivalent provenance, shown as a "Provenance"
+badge on its [npmjs.com](https://www.npmjs.com/package/@anthony-dius/clarity)
+page, linking back to the exact GitHub Actions run that published it.
+
+## Build from source (for contributors)
 
 ```bash
 bun install                                              # devDependencies only; zero runtime deps
@@ -35,10 +70,6 @@ bun build --compile ./src/cli/index.ts --outfile ./dist/clarity   # single nativ
 ./dist/clarity --json path/to/doc.md                      # machine-readable output
 ./dist/clarity --help                                     # usage + the 10 built-in rules
 ```
-
-No config file, no flags required for the common case — `clarity <file>` is
-the whole interface. See `specs/001-ste100-cli-checker/contracts/cli.md` for
-the full CLI contract.
 
 ## Non-standard tooling
 

@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+
 export interface FileReadOk {
   ok: true;
   text: string;
@@ -19,11 +21,13 @@ function looksBinary(bytes: Uint8Array): boolean {
 }
 
 export async function readFileForCheck(filePath: string): Promise<FileReadResult> {
-  const file = Bun.file(filePath);
-  if (!(await file.exists())) {
+  let buffer: Buffer;
+  try {
+    buffer = await readFile(filePath);
+  } catch {
     return { ok: false, error: `file not found: ${filePath}` };
   }
-  const bytes = new Uint8Array(await file.arrayBuffer());
+  const bytes = new Uint8Array(buffer);
   if (looksBinary(bytes)) {
     return { ok: false, error: `file is binary or not decodable as text: ${filePath}` };
   }

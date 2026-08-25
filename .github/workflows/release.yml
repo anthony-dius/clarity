@@ -1,0 +1,80 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  id-token: write
+  attestations: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun test
+      - run: bun x tsc --noEmit
+
+  binaries:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+
+      - name: Build all platform binaries
+        run: |
+          mkdir -p release
+          declare -A targets=(
+            [clarity-darwin-arm64]=bun-darwin-arm64
+            [clarity-darwin-x64]=bun-darwin-x64
+            [clarity-linux-x64]=bun-linux-x64
+            [clarity-linux-arm64]=bun-linux-arm64
+            [clarity-windows-x64.exe]=bun-windows-x64
+          )
+          for name in "${!targets[@]}"; do
+            bun build --compile --target="${targets[$name]}" ./src/cli/index.ts --outfile "release/$name"
+          done
+
+      - name: Generate checksums
+        working-directory: release
+        run: shasum -a 256 * > SHA256SUMS
+
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-path: "release/*"
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" release/* \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
+
+  npm:
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: https://registry.npmjs.org
+      - run: bun install
+      - run: bun run build:npm
+      - run: node bin/clarity.js --version
+      - run: npm publish --access public --provenance
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

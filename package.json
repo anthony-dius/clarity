@@ -1,14 +1,31 @@
 {
-  "name": "clarity",
+  "name": "@anthony-dius/clarity",
   "version": "0.1.0",
   "description": "Standalone ASD-STE100 CLI documentation checker",
   "type": "module",
-  "bin": {
-    "clarity": "./src/cli/index.ts"
+  "license": "MIT",
+  "author": "Anthony Roy",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anthony-dius/clarity.git"
   },
+  "homepage": "https://github.com/anthony-dius/clarity#readme",
+  "bugs": "https://github.com/anthony-dius/clarity/issues",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "clarity": "./bin/clarity.js"
+  },
+  "files": [
+    "bin",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "bun test",
-    "build": "bun build --compile ./src/cli/index.ts --outfile ./dist/clarity"
+    "build": "bun build --compile ./src/cli/index.ts --outfile ./dist/clarity",
+    "build:npm": "bun build ./src/cli/index.ts --outfile ./bin/clarity.js --target node --banner '#!/usr/bin/env node'"
   },
   "devDependencies": {
     "@types/bun": "^1.4.0",
