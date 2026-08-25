@@ -5,6 +5,12 @@
 **Status**: Draft
 **Input**: User description: "the initial cli will allow checking doccumentation using the core principles embodied in ASD-STE100. the tool should be standalone and be able to provide accurate guidance without refernce to external libs or services, yet be a conpact distribution, if possible. it should be versioned from the start have conventional and logical invocation parameters and sensible defaults. deterministic output. guidance traceable back to STE100 principles. concentrate on top ten most effective rules for eliminating 90% of ai produced slop verbniage"
 
+## Clarifications
+
+### Session 2026-08-25
+
+- Q: What should happen with input beyond the SC-003 performance target (a very large single file, or a very large number of files, in one invocation)? → A: No hard limit — the tool always attempts to process; performance beyond the 10,000-word target is best-effort, not guaranteed.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Check a document and get actionable findings (Priority: P1)
@@ -109,6 +115,11 @@ immediately with correct, static information.
   finding rather than merging or hiding overlapping violations.
 - How does the tool behave with no arguments at all? It MUST print help/usage
   information rather than checking nothing silently or erroring unhelpfully.
+- What happens with a single file or file batch far larger than the SC-003
+  performance target? The tool MUST still attempt to process it — no hard
+  size/count limit or rejection in v1; the 2-second/10,000-word target is a
+  performance goal, not a correctness ceiling, so larger input may simply
+  take longer rather than being refused.
 
 ## Requirements *(mandatory)*
 
@@ -193,7 +204,8 @@ immediately with correct, static information.
   consulting any resource outside the tool's own output.
 - **SC-003**: Checking a typical document (up to 10,000 words) completes in
   under 2 seconds on ordinary consumer hardware with no network connection
-  available.
+  available. No hard limit is enforced above this size — larger input is
+  still processed, just without a guaranteed completion time.
 - **SC-004**: Running the tool twice against the same unmodified file always
   produces byte-for-byte identical output.
 - **SC-005**: A new user can go from obtaining the tool to seeing their first

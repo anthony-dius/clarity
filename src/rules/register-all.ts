@@ -1,0 +1,22 @@
+import { registerRule } from "./index";
+import { passiveVoiceRule } from "./passive-voice";
+import { longSentenceRule } from "./long-sentence";
+import { oneTopicPerSentenceRule } from "./one-topic-per-sentence";
+import { hedgingModalRule } from "./hedging-modal";
+import { nominalizationRule } from "./nominalization";
+import { vagueQuantifierRule } from "./vague-quantifier";
+import { fillerPhraseRule } from "./filler-phrase";
+import { unclearReferentRule } from "./unclear-referent";
+import { complexWordRule } from "./complex-word";
+import { inconsistentTerminologyRule } from "./inconsistent-terminology";
+
+registerRule(passiveVoiceRule);
+registerRule(longSentenceRule);
+registerRule(oneTopicPerSentenceRule);
+registerRule(hedgingModalRule);
+registerRule(nominalizationRule);
+registerRule(vagueQuantifierRule);
+registerRule(fillerPhraseRule);
+registerRule(unclearReferentRule);
+registerRule(complexWordRule);
+registerRule(inconsistentTerminologyRule);
