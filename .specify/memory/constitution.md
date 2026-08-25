@@ -1,21 +1,19 @@
 <!--
 Sync Impact Report
 ==================
-Version change: [TEMPLATE] → 1.0.0 (initial ratification)
-Modified principles: N/A (first concrete adoption of the template)
-Added sections:
-  - Core Principles I-V (Test-First, CLI-First Interface, Actionable Diagnostics,
-    Deterministic & Reproducible Checks, Rule Modularity & Simplicity)
-  - Quality & Output Standards
-  - Development Workflow
-  - Governance
-Removed sections: none (template placeholders replaced with concrete content)
+Version change: 1.0.0 → 1.1.0
+Modified principles: N/A (Core Principles I-V unchanged)
+Modified sections:
+  - CAVE-SPEC RULES: relaxed from a strict global MUST (applying retroactively
+    to all speckit-generated files) to an advisory preference scoped to newly
+    created files only; pipe-table mandate and hard compression rules
+    downgraded to preferences; no longer a /speckit-analyze CRITICAL trigger.
+Added sections: none
+Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ⚠ pending (verify Constitution Check gate references TDD/CLI/determinism principles)
-  - .specify/templates/spec-template.md ⚠ pending (verify no conflicting mandatory sections)
-  - .specify/templates/tasks-template.md ⚠ pending (verify task categories include rule/check task type and test-first ordering)
-  - .specify/templates/commands/*.md ⚠ pending (verify no agent-specific-only references)
-  - README.md — not present; no action
+  - .specify/templates/plan-template.md — no change needed (unaffected)
+  - .specify/templates/spec-template.md — no change needed (unaffected)
+  - .specify/templates/tasks-template.md — no change needed (unaffected)
 Follow-up TODOs: none
 -->
 
@@ -110,6 +108,14 @@ test-per-check requirement meaningful.
   development guidance (tech stack, structure, commands); this constitution governs
   non-negotiable principles, not implementation detail.
 
+# CAVE-SPEC RULES (ADVISORY, NEW ARTIFACTS ONLY)
+- Scope: applies only to files newly created by speckit commands from this amendment forward. Existing spec.md/plan.md/tasks.md/research.md/data-model.md content is NOT retroactively rewritten to conform, and prose already present in them is not a defect.
+- PREFER "Caveman English" / "Grug Brain" compression on new artifacts where it improves clarity: cut conversational filler, greetings, pleasantries, hedging.
+- PREFER pipe tables over prose for genuinely tabular technical requirements/tasks/tracking; prose remains appropriate for rationale, narrative context, or anything a table would obscure.
+- PRESERVE code blocks, terminal paths, variables, and literal configurations perfectly without altering characters — this line stays mandatory (accuracy, not style).
+- This is a style guideline, not a gate: `/speckit-analyze` MUST NOT raise a CRITICAL/constitution-violation finding solely for prose style or absent pipe-tables.
+
+
 ## Governance
 
 This constitution supersedes all other project practices and conventions where they
@@ -128,4 +134,4 @@ principles before implementation begins (see Constitution Check gates in
 `plan-template.md`). Any deviation MUST be justified in the plan's Complexity
 Tracking section or rejected in favor of a simpler, compliant approach.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-25 | **Last Amended**: 2026-08-25
+**Version**: 1.1.0 | **Ratified**: 2026-08-25 | **Last Amended**: 2026-08-25
