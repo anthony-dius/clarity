@@ -1,0 +1,55 @@
+name: Publish Package
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'npm tag (latest or next)'
+        required: true
+        type: choice
+        options:
+          - latest
+          - next
+  repository_dispatch:
+    types: [publish-package]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+
+      - name: Resolve tag
+        id: resolve
+        run: |
+          TAG="${{ github.event.client_payload.tag || inputs.tag }}"
+          if [ -z "$TAG" ]; then TAG="latest"; fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+      - name: Bump to a prerelease version for the 'next' tag
+        if: steps.resolve.outputs.tag == 'next'
+        run: |
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            BUILD_NUMBER=$(git rev-list "${LAST_TAG}..HEAD" --count)
+          else
+            BUILD_NUMBER=$(git rev-list HEAD --count)
+          fi
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          npm version "${CURRENT_VERSION}-next.${BUILD_NUMBER}" --no-git-tag-version --allow-same-version
+
+      - run: bun run build:npm
+      - run: node bin/clarity.js --version
+
+      - name: Publish to npm with OIDC
+        run: npm publish --access public --tag "${{ steps.resolve.outputs.tag }}"

@@ -1,0 +1,38 @@
+name: Pr
+
+on:
+  pull_request:
+  pull_request_target:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  Check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Test
+        run: bun test
+
+      - name: Typecheck
+        run: bun x tsc --noEmit
+
+      - name: Build (compile check)
+        run: bun run build
