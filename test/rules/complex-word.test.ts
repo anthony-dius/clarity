@@ -18,4 +18,12 @@ describe("complexWordRule", () => {
   test("does not flag plain vocabulary", () => {
     expect(complexWordRule.check("Use the script to check results.\n", "f.md").length).toBe(0);
   });
+
+  test("flags 'leverage', 'endeavor', 'ascertain', 'commence', 'terminate'", () => {
+    expect(complexWordRule.check("Leverage the existing tool.\n", "f.md").length).toBe(1);
+    expect(complexWordRule.check("Endeavor to fix it soon.\n", "f.md").length).toBe(1);
+    expect(complexWordRule.check("Ascertain the root cause first.\n", "f.md").length).toBe(1);
+    expect(complexWordRule.check("Commence the build now.\n", "f.md").length).toBe(1);
+    expect(complexWordRule.check("Terminate the process.\n", "f.md").length).toBe(1);
+  });
 });
