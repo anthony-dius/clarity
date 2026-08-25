@@ -31,7 +31,8 @@ One reported violation of one Rule at one location in one file.
 | excerpt | string | offending text snippet |
 
 - Ordering: Findings within a CheckResult sorted by `(line, column, ruleId)` — determinism (FR-007).
-- Constraint: one Finding per (rule, location) — overlapping rule violations at the same sentence produce separate Findings (edge case in spec), never merged.
+- Constraint: one Finding per (rule, location).
+  Overlapping rule violations at the same sentence produce separate Findings (edge case in spec), never merged.
 
 ## CheckResult
 

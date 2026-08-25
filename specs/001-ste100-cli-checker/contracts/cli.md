@@ -29,7 +29,8 @@ No other flags in v1 (FR-013: no custom-rule config).
 ## stdout / stderr
 
 - stdout: check results (text or JSON per `--json`), help text, version text.
-- stderr: errors (missing file, unreadable file, non-text file, unknown flag) — never mixed into stdout so `--json` output always parses cleanly.
+- stderr: errors (missing file, unreadable file, non-text file, unknown flag).
+  Errors never mix into stdout, so `--json` output always parses cleanly.
 
 ## Text output shape (human-readable, default)
 
@@ -77,7 +78,8 @@ Serializes `RunSummary` (see data-model.md) directly:
 }
 ```
 
-- Same field set as the text renderer reads from — no fields present in one mode and absent in the other (Principle II).
+- Same field set as the text renderer reads from.
+  No field is present in one mode and absent in the other (Principle II).
 - Stable schema across patch/minor tool versions (constitution: Quality & Output Standards) — breaking change requires MAJOR bump.
 
 ## Determinism contract

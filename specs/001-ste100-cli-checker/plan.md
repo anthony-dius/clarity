@@ -12,7 +12,8 @@ single compiled binary (Bun compile) — no runtime install needed.
 ## Technical Context
 
 **Language/Version**: TypeScript on Bun 1.3+
-**Primary Dependencies**: none runtime (stdlib + Bun built-ins only); `commander` NOT used — hand-rolled arg parse to keep binary lean and behavior fully deterministic/testable
+**Primary Dependencies**: none at runtime (stdlib + Bun built-ins only).
+No `commander` — a hand-rolled arg parser keeps the binary lean and behavior fully deterministic and testable
 **Storage**: N/A (stateless, reads files, writes stdout/stderr)
 **Testing**: `bun test` (built-in, no extra dep) — TDD enforced via `probity.config.ts`
 **Target Platform**: macOS/Linux/Windows CLI (wherever Bun-compiled binary runs)
@@ -28,10 +29,10 @@ single compiled binary (Bun compile) — no runtime install needed.
 | Principle | Check | Status |
 |---|---|---|
 | I. Test-First | Every rule ships with true-positive + true-negative test written first; `probity.config.ts` enforces on `src/**`+`test/**` | PASS (plan: tests before impl per rule) |
-| II. CLI-First Interface | Sole interface is CLI; stdin/file/flags in, stdout results, stderr errors; text + JSON both required | PASS (FR-006, FR-009) |
-| III. Actionable Diagnostics | Every Finding carries file+location, rule id, ASD-STE100 principle, description, remediation instruction | PASS (FR-008, data-model Finding) |
-| IV. Deterministic & Reproducible | No network, no randomness, no unordered structures in output path; findings sorted by (file, line, rule id) | PASS (FR-003, FR-007) |
-| V. Rule Modularity & Simplicity | Each rule = one file/function, single responsibility, no shared mutable config beyond fixed rule-set version | PASS (data-model Rule; no custom-rule config, per FR-013) |
+| II. CLI-First Interface | CLI only; file/flag input, stdout results, stderr errors; text+JSON required | PASS (FR-006, FR-009) |
+| III. Actionable Diagnostics | Every Finding carries location, rule id, principle, description, remediation | PASS (FR-008, data-model) |
+| IV. Deterministic & Reproducible | No network, randomness, or unordered output; findings sort by file/line/rule | PASS (FR-003, FR-007) |
+| V. Rule Modularity & Simplicity | One file per rule; single responsibility; no shared mutable config | PASS (FR-013) |
 
 No violations. Complexity Tracking section not needed.
 

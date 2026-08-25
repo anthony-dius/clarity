@@ -9,7 +9,7 @@
 
 ### Session 2026-08-25
 
-- Q: What should happen with input beyond the SC-003 performance target (a very large single file, or a very large number of files, in one invocation)? → A: No hard limit — the tool always attempts to process; performance beyond the 10,000-word target is best-effort, not guaranteed.
+- Q: What should happen with oversized input — a huge file, or a large batch at once? → A: No hard limit: the tool always attempts to process; performance beyond 10,000 words is best-effort only.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -20,8 +20,8 @@ agent-instructions file, or a README destined for a system prompt) and receives
 a list of findings, each pointing to the exact location of a problem, the
 writing rule it violates, and a concrete instruction for fixing it.
 
-**Why this priority**: This is the entire value proposition of Clarity. Without
-this, there is no product — everything else is refinement around this core loop.
+**Why this priority**: This is the entire value proposition of Clarity.
+Without this core loop, Clarity has no product; everything else refines it.
 
 **Independent Test**: Run the CLI against a fixture document containing known
 violations of the ten built-in rules and a fixture document with none. The tool
@@ -45,13 +45,11 @@ must report a clean pass on the violation-free document.
 
 ### User Story 2 - Consume results programmatically (Priority: P2)
 
-A user or an agent pipeline runs the tool in a mode that emits machine-readable
-output, so results can be parsed and acted on automatically (e.g., in CI, or as
-input to another agent step) instead of being read by a human.
+A user or an agent pipeline runs the tool in a mode that emits machine-readable output.
+Downstream tooling — a CI script, or another agent step — then parses that output instead of a human.
 
-**Why this priority**: Clarity's stated purpose includes guiding agents, not
-just humans. Structured output is required for that use case but is secondary
-to the core detection loop working at all.
+**Why this priority**: Clarity's stated purpose includes guiding agents, not just humans.
+Agent pipelines need structured output, but the core detection loop working at all matters more.
 
 **Independent Test**: Run the CLI with the machine-readable output flag against
 a fixture document with known violations and verify the output parses as valid
@@ -80,10 +78,9 @@ available options.
 "sensible defaults" requirement, but the tool already delivers its core value
 without this polish.
 
-**Independent Test**: On a clean environment, install the tool and run it with
-only a file path argument (no other flags); verify useful output is produced.
-Separately invoke the version flag and the help flag and verify both return
-immediately with correct, static information.
+**Independent Test**: On a clean environment, install the tool and run it with only a file path argument.
+Confirm this produces useful output with no other flags.
+Separately invoke the version flag and the help flag, and confirm both return immediately with correct, static information.
 
 **Acceptance Scenarios**:
 
@@ -107,19 +104,20 @@ immediately with correct, static information.
 - What happens when the input file is binary or not decodable as text? The tool
   MUST detect this and report a clear error identifying the file, rather than
   producing garbled or misleading findings.
-- What happens when multiple files are passed and only some contain
-  violations? The tool MUST report per-file results plus an overall summary,
-  clearly distinguishing which files passed and which did not.
+- What happens when the user checks multiple files and only part of them
+  contain violations? The tool MUST report per-file results plus an overall
+  summary, clearly distinguishing which files passed and which did not.
 - What happens when a single sentence or section violates more than one of the
   ten rules at once? The tool MUST report each violated rule as a separate
   finding rather than merging or hiding overlapping violations.
-- How does the tool behave with no arguments at all? It MUST print help/usage
-  information rather than checking nothing silently or erroring unhelpfully.
+- How does the tool behave with no arguments at all? The tool MUST print
+  help/usage information rather than checking nothing silently or erroring
+  unhelpfully.
 - What happens with a single file or file batch far larger than the SC-003
   performance target? The tool MUST still attempt to process it — no hard
   size/count limit or rejection in v1; the 2-second/10,000-word target is a
   performance goal, not a correctness ceiling, so larger input may simply
-  take longer rather than being refused.
+  take longer instead of the tool refusing it.
 
 ## Requirements *(mandatory)*
 
@@ -128,9 +126,9 @@ immediately with correct, static information.
 - **FR-001**: The tool MUST accept one or more file paths as command-line
   arguments and check the contents of each against a fixed set of exactly ten
   built-in writing rules derived from ASD-STE100 principles.
-- **FR-002**: Each of the ten built-in rules MUST be traceable to a specific,
+- **FR-002**: Each of the ten built-in rules MUST trace back to a specific,
   named ASD-STE100 writing principle, and every finding produced by that rule
-  MUST cite the principle it is based on.
+  MUST cite the principle underlying it.
 - **FR-003**: The tool MUST run fully standalone: it MUST NOT make network
   calls and MUST NOT depend on any external service being reachable to produce
   a result.
@@ -138,8 +136,8 @@ immediately with correct, static information.
   self-contained artifact that requires no separate runtime installation step
   beyond obtaining and placing that artifact on the user's system.
 - **FR-005**: The tool MUST report its own version on request, and that version
-  report MUST also identify the version of the built-in rule set in effect, so
-  that a finding can always be tied back to a specific, fixed rule definition.
+  report MUST also identify the version of the built-in rule set in effect. The
+  tool MUST always tie a finding back to a specific, fixed rule definition.
 - **FR-006**: The command-line interface MUST use conventional argument and
   flag conventions (long flags, short aliases where sensible, a help flag) and
   MUST require no mandatory flags for the common case: checking a file with
@@ -157,20 +155,19 @@ immediately with correct, static information.
   text (the default) and machine-readable structured output (selected via a
   flag) — both derived from the same underlying finding data so they never
   disagree.
-- **FR-010**: The tool MUST exit with a non-zero status code when any finding
-  is reported for any checked file, and a zero status code when every checked
-  file passes with no findings.
+- **FR-010**: The tool MUST exit with a non-zero status code when a checked
+  file has any finding, and a zero status code when every checked file passes
+  with no findings.
 - **FR-011**: The tool MUST support checking multiple files in a single
   invocation and MUST report both per-file results and an overall summary
   (files checked, files passed, files failed, total findings).
 - **FR-012**: The tool MUST explicitly report a clean pass for a file with zero
   findings rather than producing no output for that file.
 - **FR-013**: The initial version targets a curated set of built-in rules
-  (around ten); no user-authored custom rules are supported in v1. The exact
-  rule count MAY be adjusted during implementation if research shows a
-  different set better serves SC-001. Any change to the rule set after the v1
-  release SHOULD be accompanied by a rule-set version change, but this is
-  guidance rather than a hard release-blocking gate.
+  (around ten); v1 supports no user-authored custom rules. The exact rule
+  count may change during implementation if research favors a different set,
+  weighed against SC-001. Any post-v1 rule-set change SHOULD bump the
+  rule-set version, but this is guidance, not a hard release-blocking gate.
 - **FR-014**: The tool MUST detect unreadable, missing, or non-text input files
   and report a clear, actionable error identifying the offending file, without
   crashing or producing a partial/misleading result for that file.
@@ -181,7 +178,7 @@ immediately with correct, static information.
 ### Key Entities
 
 - **Rule**: One of the ten fixed, built-in checks. Has an identifier, a short
-  name, the ASD-STE100 principle it is derived from, a description of what it
+  name, the ASD-STE100 principle it derives from, a description of what it
   detects, and a remediation instruction template used to generate findings.
 - **Finding**: One reported violation of a Rule within a checked file. Has the
   source file, a location within that file, the Rule it violates, a
@@ -204,8 +201,8 @@ immediately with correct, static information.
   consulting any resource outside the tool's own output.
 - **SC-003**: Checking a typical document (up to 10,000 words) completes in
   under 2 seconds on ordinary consumer hardware with no network connection
-  available. No hard limit is enforced above this size — larger input is
-  still processed, just without a guaranteed completion time.
+  available. The tool enforces no hard limit above this size — it still
+  processes larger input, just without a guaranteed completion time.
 - **SC-004**: Running the tool twice against the same unmodified file always
   produces byte-for-byte identical output.
 - **SC-005**: A new user can go from obtaining the tool to seeing their first
@@ -225,12 +222,12 @@ immediately with correct, static information.
   decision, not a specification concern.
 - The specific selection of rules (target: around ten) is the highest-impact
   subset of ASD-STE100 principles for catching verbose, hedging, passive, or
-  vague AI-generated prose; the exact rule list and count are finalized during
-  planning/research and weighed against SC-001 as a goal, not a fixed
-  specification requirement.
+  vague AI-generated prose; planning/research finalizes the exact rule list
+  and count, weighed against SC-001 as a goal, not a fixed specification
+  requirement.
 - For the initial version, the tool and its built-in rule set share a single
   version number; tracking them as independently versionable artifacts is out
   of scope for v1.
-- No external configuration file is required or supported in v1; all behavior
-  is controlled via command-line flags and built-in defaults.
+- V1 requires and supports no external configuration file; command-line flags
+  and built-in defaults control all behavior.
 - Non-English documents are out of scope for v1.

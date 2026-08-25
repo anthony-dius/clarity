@@ -8,7 +8,8 @@ description: "Task list for Standalone ASD-STE100 CLI Documentation Checker"
 **Input**: Design documents from `/specs/001-ste100-cli-checker/`
 **Prerequisites**: plan.md, spec.md, research.md, data-model.md, contracts/cli.md, quickstart.md
 
-**Tests**: Constitution Principle I (Test-First, NON-NEGOTIABLE) mandates a failing test before every rule/check/CLI behavior. Test tasks below are REQUIRED, not optional, and MUST be completed (and observed failing) before their paired implementation task.
+**Tests**: Constitution Principle I (Test-First, NON-NEGOTIABLE) mandates a failing test before every rule/check/CLI behavior.
+Test tasks below are not optional: complete each one, and observe it fail, before its paired implementation task.
 
 **Organization**: Grouped by user story (spec.md) for independent implementation/testing.
 
@@ -49,9 +50,11 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 
 ## Phase 3: User Story 1 - Check a document and get actionable findings (Priority: P1) 🎯 MVP
 
-**Goal**: Run the CLI against file path(s); get per-finding location, rule, principle, and remediation; per-file + overall summary; correct exit code.
+**Goal**: Run the CLI against file path(s); get per-finding location, rule, principle, and remediation.
+Get a per-file result plus an overall summary, and the correct exit code.
 
-**Independent Test**: Run CLI against a fixture with known violations and a fixture with none; every known violation is reported with a remediation instruction, and the clean fixture reports a clean pass.
+**Independent Test**: Run CLI against a fixture with known violations and a fixture with none.
+Every known violation carries a remediation instruction, and the clean fixture reports a clean pass.
 
 ### Tests for User Story 1 (write first; MUST fail before implementation)
 
@@ -69,7 +72,7 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 - [X] T018 [P] [US1] Engine test: empty file → clean pass (not an error) in `test/engine/empty-file.test.ts`
 - [X] T019 [P] [US1] Engine test: missing/unreadable file → clear error, no crash, in `test/engine/check.test.ts` (merged into check.test.ts rather than a separate file)
 - [X] T020 [P] [US1] Engine test: binary/non-decodable file → clear error identifying the file, in `test/engine/reader.test.ts` (covered at the reader layer)
-- [X] T021 [P] [US1] CLI test: multi-file invocation reports per-file result + overall summary, exit code 0 clean / 1 with findings, in `test/cli/check.test.ts`
+- [X] T021 [P] [US1] CLI test: multi-file → per-file result + summary, exit 0/1, in `test/cli/check.test.ts`
 
 ### Implementation for User Story 1
 
@@ -88,7 +91,7 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 - [X] T034 [US1] Implement per-file check orchestration (run rules, assemble Findings, sort) in `src/engine/check.ts` (depends on T004, T005, T033)
 - [X] T035 [US1] Implement multi-file run + `RunSummary` aggregation in `src/engine/run.ts` (depends on T034)
 - [X] T036 [US1] Implement text output renderer in `src/format/text.ts` (depends on T003, per contracts/cli.md text shape)
-- [X] T037 [US1] Implement CLI entry (file-path args only, no flags yet): invoke run, render text, set exit code, in `src/cli/index.ts` (depends on T035, T036)
+- [X] T037 [US1] Implement CLI entry (file-path args only, no flags yet) in `src/cli/index.ts`: run, render text, set exit code (depends on T035, T036)
 - [X] T038 [US1] Wire `bin` entry point and `bun build --compile` script in `package.json` (depends on T037)
 
 **Checkpoint**: User Story 1 fully functional and independently testable (`clarity <file>...`).
@@ -99,12 +102,13 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 
 **Goal**: `--json` flag emits structured output with the same finding data as text mode.
 
-**Independent Test**: Run with `--json` against a fixture with known violations; output parses as valid structured data with the same findings as text mode; repeated runs produce identical output.
+**Independent Test**: Run with `--json` against a fixture with known violations.
+Output parses as valid data with the same findings as text mode, and repeated runs produce identical output.
 
 ### Tests for User Story 2 (write first; MUST fail before implementation)
 
-- [X] T039 [P] [US2] Test `--json` emits parseable `RunSummary` with one entry per finding (location, rule, principle, message, remediation) in `test/cli/json-output.test.ts`
-- [X] T040 [P] [US2] Parity test: text and JSON renderers produce the same Finding set from the same `RunSummary` in `test/format/parity.test.ts`
+- [X] T039 [P] [US2] Test `--json` emits parseable `RunSummary`, one entry per finding, in `test/cli/json-output.test.ts`
+- [X] T040 [P] [US2] Parity test: text and JSON renderers read the same `RunSummary`, in `test/format/parity.test.ts`
 
 ### Implementation for User Story 2
 
@@ -119,7 +123,8 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 
 **Goal**: No-args prints help; `--help`/`-h` lists flags and the built-in rule set; `--version`/`-v` prints tool + rule-set version.
 
-**Independent Test**: Fresh install, run with only a file path → useful output with defaults; run `--version` and `--help` independently and verify correct static output.
+**Independent Test**: Fresh install, run with only a file path → useful output with defaults.
+Separately run `--version` and `--help`, and confirm correct static output.
 
 ### Tests for User Story 3 (write first; MUST fail before implementation)
 
@@ -129,7 +134,7 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 
 ### Implementation for User Story 3
 
-- [X] T046 [US3] Implement flag/argument handling (files, `--json`, `--help`/`-h`, `--version`/`-v`, unknown-flag → exit 2) inline in `src/cli/index.ts` (no separate `args.ts` — the flag set is small enough that a dedicated module would be unused abstraction per constitution Principle V/YAGNI)
+- [X] T046 [US3] Implement flag handling (files, `--json`, `--help`/`-h`, `--version`/`-v`, unknown-flag → exit 2) inline in `src/cli/index.ts` (no separate `args.ts` — the small flag set doesn't earn a dedicated module, per Principle V/YAGNI)
 - [X] T047 [US3] Implement help text generator (usage + built-in rules list, read from the registry) in `src/cli/help.ts` (depends on T033 rule registry)
 - [X] T048 [US3] Implement version output (tool version + rule-set version) in `src/cli/version.ts`
 - [X] T049 [US3] Wire `src/cli/help.ts`, `src/cli/version.ts`, and flag handling into `src/cli/index.ts` entry (depends on T042, T046, T047, T048)
@@ -142,7 +147,7 @@ Single project. `src/` (cli, rules, engine, format, types), `test/` (rules, engi
 
 - [X] T050 [P] Determinism regression test: run CLI twice on `fixtures/violations.md`, assert byte-identical stdout, in `test/cli/determinism.test.ts`
 - [X] T051 [P] Performance test: 10,000-word fixture checked in under 2 seconds, in `test/engine/performance.test.ts` (uses `fixtures/large.md`)
-- [X] T052 Run `quickstart.md` steps manually against the compiled binary and confirm each example behaves as documented (covers SC-002, SC-005) — all steps verified: single file, multi-file, `--json`, `--version`, `--help`, no-args, empty file
+- [X] T052 Run `quickstart.md` steps by hand against the compiled binary (covers SC-002, SC-005): single file, multi-file, `--json`, version, help, no-args, empty file
 - [X] T053 [P] Informal detection-rate check against SC-001's ~90% target using `fixtures/violations.md`; log the observed rate — a shortfall is a documented follow-up, not a failing test, in `test/rules/detection-rate.test.ts` (result: 10/10 rules fired, 100%)
 
 ---
@@ -204,6 +209,7 @@ Task: "Implement long-sentence rule in src/rules/long-sentence.ts"
 ### Notes
 
 - Commit after each task or logical group.
-- Rule tasks (T023-T032) are the highest-value parallelization opportunity — 10 independent files (current target count; not a hard-fixed number per FR-013).
+- Rule tasks (T023-T032) are the highest-value parallelization opportunity — 10 independent files.
+  FR-013 treats ten as a current target, not a hard-fixed number.
 - SC-001 (~90% detection) and FR-013 (rule count) are targets, not release-blocking gates (constitution v1.1.0) — T053 tracks SC-001 informally rather than as a pass/fail check.
 - Total: 53 tasks — 6 setup/foundational, 30 for US1 (MVP), 4 for US2, 7 for US3, 4 polish.
