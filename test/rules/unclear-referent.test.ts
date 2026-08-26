@@ -25,4 +25,8 @@ describe("unclearReferentRule", () => {
     const text = "The team reviewed the proposal and agreed it addressed every concern. Without\nthis fix, the release cannot proceed as planned this quarter.\n";
     expect(unclearReferentRule.check(text, "f.md").length).toBe(0);
   });
+
+  test("does not flag 'Its' (possessive, not the bare pronoun 'it')", () => {
+    expect(unclearReferentRule.check("Its configuration differs from the default.\n", "f.md").length).toBe(0);
+  });
 });

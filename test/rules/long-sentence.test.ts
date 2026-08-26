@@ -22,4 +22,11 @@ describe("longSentenceRule", () => {
     expect(findings.length).toBe(1);
     expect(findings[0].message).toContain("27 words");
   });
+
+  test("counts a hyphenated compound as one word and passes at exactly the 20-word boundary", () => {
+    const words = Array.from({ length: 19 }, (_, i) => `word${i}`);
+    words.splice(10, 0, "on-call");
+    const findings = longSentenceRule.check(`${words.join(" ")}.\n`, "f.md");
+    expect(findings.length).toBe(0);
+  });
 });

@@ -1,6 +1,13 @@
 import type { Finding, Rule } from "../types/index";
 import { splitSentences } from "../engine/sentences";
 
+// Intentionally left on its existing regex for the AST/rule-based refactor
+// (specs/003-ste100-ast-refactor, FR-004): a spike confirmed compromise's own
+// tokenizer splits a hyphenated compound like "auto-configure" into separate
+// terms ("auto-", "configure") the same way `\bconfigure\b` does, so an
+// AST-based rewrite would not close the assumed word-boundary gap and would
+// be a purely speculative change with no acceptance-scenario justification.
+// Canonical positive/negative examples: test/rules/inconsistent-terminology.test.ts
 export const inconsistentTerminologyRule: Rule = {
   id: "inconsistent-terminology",
   name: "Inconsistent terminology",

@@ -26,4 +26,9 @@ describe("complexWordRule", () => {
     expect(complexWordRule.check("Commence the build now.\n", "f.md").length).toBe(1);
     expect(complexWordRule.check("Terminate the process.\n", "f.md").length).toBe(1);
   });
+
+  test("flags 'contact' used as a noun, but not used as a verb (ASD-STE100 approves it only as a verb)", () => {
+    expect(complexWordRule.check("We are in contact with the crew.\n", "f.md").length).toBe(1);
+    expect(complexWordRule.check("Contact the crew immediately.\n", "f.md").length).toBe(0);
+  });
 });
