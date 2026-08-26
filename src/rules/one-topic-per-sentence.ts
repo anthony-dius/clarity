@@ -1,6 +1,11 @@
 import type { Finding, Rule } from "../types/index";
 import { splitSentences } from "../engine/sentences";
 
+// Intentionally left on its existing regex for the AST/rule-based refactor
+// (specs/003-ste100-ast-refactor, FR-004): counting occurrences of the three
+// invariant words and/but/or has no inflection or word-boundary edge case an
+// AST pass would resolve differently — a rewrite here would be speculative.
+// Canonical positive/negative examples: test/rules/one-topic-per-sentence.test.ts
 const CONJUNCTION_PATTERN = /\b(and|but|or)\b/gi;
 const MIN_CONJUNCTIONS = 3;
 

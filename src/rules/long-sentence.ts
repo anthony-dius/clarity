@@ -3,6 +3,12 @@ import { splitSentences } from "../engine/sentences";
 
 const MAX_WORDS = 20;
 
+// Intentionally kept as a whitespace split (not AST term-splitting) for the
+// AST/rule-based refactor (specs/003-ste100-ast-refactor): compromise's own
+// tokenizer splits hyphenated compounds like "on-call" into two terms, which
+// would overcount words a reader perceives as one.
+// Canonical positive/negative examples: test/rules/long-sentence.test.ts
+
 export const longSentenceRule: Rule = {
   id: "long-sentence",
   name: "Long sentence",

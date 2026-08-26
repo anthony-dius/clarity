@@ -1,0 +1,155 @@
+{
+  "violations": {
+    "toolVersion": "0.2.0",
+    "ruleSetVersion": "1.0.0",
+    "results": [
+      {
+        "file": "fixtures/violations.md",
+        "status": "fail",
+        "findings": [
+          {
+            "file": "fixtures/violations.md",
+            "line": 3,
+            "column": null,
+            "ruleId": "passive-voice",
+            "principle": "Use active voice",
+            "message": "Passive-voice construction found: \"was written\".",
+            "remediation": "Rewrite in active voice: identify who performs the action and make them the subject (e.g. \"The team wrote the report\" instead of \"The report was written by the team\").",
+            "excerpt": "The report was written by the team on Tuesday."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 5,
+            "column": null,
+            "ruleId": "long-sentence",
+            "principle": "Keep sentences short",
+            "message": "Sentence has 29 words (limit 20).",
+            "remediation": "Split this sentence into two or more shorter sentences, one idea per sentence.",
+            "excerpt": "This is a very long sentence that keeps going on and on with far more than twenty words just to see whether the long sentence rule catches it correctly."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 5,
+            "column": null,
+            "ruleId": "unclear-referent",
+            "principle": "Ensure every pronoun has one clear referent",
+            "message": "Sentence opens with an unclear referent: \"This\".",
+            "remediation": "Replace \"This\" with the specific noun it refers to.",
+            "excerpt": "This is a very long sentence that keeps going on and on with far more than twenty words just to see whether the long sentence rule catches it correctly."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 7,
+            "column": null,
+            "ruleId": "one-topic-per-sentence",
+            "principle": "Express one instruction or idea per sentence",
+            "message": "Sentence joins 3 clauses with and/but/or.",
+            "remediation": "Split this sentence so each sentence expresses one instruction or idea.",
+            "excerpt": "Open the file and read it and check it and save it."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 9,
+            "column": null,
+            "ruleId": "hedging-modal",
+            "principle": "Use approved words; avoid ambiguous modals",
+            "message": "Hedging modal found: \"might\".",
+            "remediation": "Replace the hedge with a direct, testable statement.",
+            "excerpt": "You might want to check the config before you continue."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 11,
+            "column": null,
+            "ruleId": "nominalization",
+            "principle": "Use verbs, not noun forms of verbs",
+            "message": "Nominalization found: \"utilization\".",
+            "remediation": "Replace \"utilization\" with the verb \"use\".",
+            "excerpt": "Check the utilization of the disk before proceeding."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 13,
+            "column": null,
+            "ruleId": "vague-quantifier",
+            "principle": "Be precise; avoid vague terms",
+            "message": "Vague quantifier found: \"Some\".",
+            "remediation": "Replace \"Some\" with a specific count or a precise description.",
+            "excerpt": "Some files failed during the run."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 15,
+            "column": null,
+            "ruleId": "filler-phrase",
+            "principle": "Eliminate unnecessary words",
+            "message": "Filler phrase found: \"It is important to note that\".",
+            "remediation": "Delete \"It is important to note that\" and state the point directly.",
+            "excerpt": "It is important to note that the build failed on the first attempt."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 15,
+            "column": null,
+            "ruleId": "unclear-referent",
+            "principle": "Ensure every pronoun has one clear referent",
+            "message": "Sentence opens with an unclear referent: \"It\".",
+            "remediation": "Replace \"It\" with the specific noun it refers to.",
+            "excerpt": "It is important to note that the build failed on the first attempt."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 17,
+            "column": null,
+            "ruleId": "unclear-referent",
+            "principle": "Ensure every pronoun has one clear referent",
+            "message": "Sentence opens with an unclear referent: \"This\".",
+            "remediation": "Replace \"This\" with the specific noun it refers to.",
+            "excerpt": "This breaks the build in a way nobody expected."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 19,
+            "column": null,
+            "ruleId": "complex-word",
+            "principle": "Use approved/simple vocabulary over complex synonyms",
+            "message": "Complex word found: \"Utilize\".",
+            "remediation": "Replace \"Utilize\" with \"use\".",
+            "excerpt": "Utilize the script to facilitate the migration."
+          },
+          {
+            "file": "fixtures/violations.md",
+            "line": 21,
+            "column": null,
+            "ruleId": "inconsistent-terminology",
+            "principle": "Use one term per concept, consistently",
+            "message": "Term \"configure\" is a synonym for \"set up\", used earlier in the document.",
+            "remediation": "Use one term consistently for this concept \u2014 pick either \"set up\" or \"configure\" and use it throughout.",
+            "excerpt": "Now configure the database."
+          }
+        ]
+      }
+    ],
+    "filesChecked": 1,
+    "filesPassed": 0,
+    "filesFailed": 1,
+    "totalFindings": 12,
+    "exitCode": 1
+  },
+  "clean": {
+    "toolVersion": "0.2.0",
+    "ruleSetVersion": "1.0.0",
+    "results": [
+      {
+        "file": "fixtures/clean.md",
+        "status": "pass",
+        "findings": []
+      }
+    ],
+    "filesChecked": 1,
+    "filesPassed": 1,
+    "filesFailed": 0,
+    "totalFindings": 0,
+    "exitCode": 0
+  }
+}

@@ -1,7 +1,7 @@
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan:
-specs/002-detect-accuracy-suppress/plan.md
+specs/003-ste100-ast-refactor/plan.md
 <!-- SPECKIT END -->
 
 ## Habit Hooks
