@@ -1,6 +1,6 @@
 {
   "name": "@anthony-dius/clarity",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Standalone ASD-STE100 CLI documentation checker",
   "type": "module",
   "license": "MIT",

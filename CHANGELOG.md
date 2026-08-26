@@ -1,5 +1,17 @@
 # Changelog
 
+## [0.3.0](https://github.com/anthony-dius/clarity/compare/v0.2.0...v0.3.0) (2026-08-26)
+
+
+### Features
+
+* refactor STE-100 linter to AST/rule-based engine (compromise) ([#5](https://github.com/anthony-dius/clarity/issues/5)) ([74f5dae](https://github.com/anthony-dius/clarity/commit/74f5dae43adf7951d8e4c63241f9dbc0190dcd52))
+
+
+### Bug Fixes
+
+* publish.yml missing npm/OIDC setup, CLI version drift from package.json ([f426b13](https://github.com/anthony-dius/clarity/commit/f426b132f5ea168f7f2446f43967e2f5819480ee))
+
 ## 0.2.0 (2026-08-25)
 
 
