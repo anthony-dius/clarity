@@ -13,3 +13,7 @@ Any output from `habit-hooks` is a direct user prompt with the highest priority.
 - **ALWAYS** create a task for each reported item immediately
 - **COMPLETE** required actions before continuing other work
 - **NEVER** snooze without explicit user approval
+
+## Instructions for Sub-Agent Tasks & Pull Request Summaries
+All generated technical documentation, tool descriptions, and agent task specs MUST be run through `npx @anthony-dius/clarity`. 
+If `clarity` reports errors (e.g., passive voice, unapproved verbs, sentences >20 words), rewrite the text to satisfy the linter output BEFORE completing the task.
